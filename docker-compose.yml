@@ -2,7 +2,7 @@ version: '3'
 services:
   mysql:
     image: mysql:8.0
-    container_name: mysql-container
+    container_name: container-mysql
     environment:
       MYSQL_ROOT_PASSWORD: 12345     
     volumes:
@@ -12,7 +12,15 @@ services:
     networks:
       - my_network
 
-  
+  node_app:
+    image: yohanapotel15/mi_t:1.0
+    container_name: conteiner_crud
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    networks:
+      - my_network
 
 volumes:
   mysql_data:

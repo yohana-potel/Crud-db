@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+mysql = require('mysql2');
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -15,7 +15,7 @@ db.connect((err) => {
     }
 
     // Verificar si existe la base de datos
-    db.query("CREATE DATABASE IF NOT EXISTS cruddb", (err) => {
+    db.query("CREATE DATABASE IF NOT EXISTS cruddb2", (err) => {
         if (err) {
             console.log("Error al crear la db");
             return;
@@ -24,24 +24,38 @@ db.connect((err) => {
     });
 
     // Seleccionar base de datos
-    db.query("USE cruddb", (err) => {
+    db.query("USE cruddb2", (err) => {
         if (err) {
             console.log("Error al seleccionar la db");
             return;
         }
         console.log("Conexion exitosa");
     });
-
-    // Verificar si existe la tabla persona
-    const createTableSQL = `
-        CREATE TABLE IF NOT EXISTS persona (
+    const createTableSQLoficina = `
+        CREATE TABLE IF NOT EXISTS oficina (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            nombre VARCHAR(255),
-            email VARCHAR(255)
+            denominacion VARCHAR(255)            
         ) 
     `;
 
-    db.query(createTableSQL, (err) => {
+    // Verificar si existe la tabla persona
+    const createTableSQLpersona = `
+        CREATE TABLE IF NOT EXISTS persona (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nombre VARCHAR(255),
+            email VARCHAR(255),
+            oficina_id INT,
+            FOREIGN KEY (oficina_id) REFERENCES oficina(id)
+        ) 
+    `;
+
+    db.query(createTableSQLoficina, (err) => {
+        if (err) {
+            console.log("Error al crear la tabla");
+            return;
+        }
+    });
+    db.query(createTableSQLpersona, (err) => {
         if (err) {
             console.log("Error al crear la tabla");
             return;
